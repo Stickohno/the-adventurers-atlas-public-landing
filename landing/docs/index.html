@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Download The Adventurer's Atlas — a local-first desktop toolkit for game masters running 5e at the table." />
+  <meta name="theme-color" content="#141820" />
+  <title>The Adventurer's Atlas — Download</title>
+  <link rel="icon" href="assets/icon.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: hsl(230 25% 6%);
+      --bg-elevated: hsl(220 18% 11%);
+      --bg-card: hsl(220 16% 13%);
+      --border: hsl(220 14% 22%);
+      --text: hsl(220 15% 92%);
+      --muted: hsl(220 12% 62%);
+      --gold: hsl(35 80% 56%);
+      --gold-dim: hsl(35 60% 42%);
+      --arcane: hsl(260 70% 65%);
+      --success: hsl(145 45% 48%);
+      --radius: 14px;
+      --shadow: 0 24px 64px hsl(230 40% 2% / 0.55);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, hsl(260 50% 18% / 0.45), transparent),
+        radial-gradient(ellipse 60% 40% at 100% 0%, hsl(35 60% 20% / 0.12), transparent),
+        var(--bg);
+    }
+
+    a { color: var(--gold); text-decoration: none; }
+    a:hover { color: hsl(35 90% 68%); text-decoration: underline; }
+
+    .wrap {
+      width: min(960px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 2.5rem 0 4rem;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem 0 2.5rem;
+    }
+
+    .logo-ring {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 96px;
+      height: 96px;
+      margin-bottom: 1.25rem;
+      border-radius: 22px;
+      background: linear-gradient(145deg, hsl(220 18% 16%), hsl(220 20% 9%));
+      border: 1px solid hsl(35 50% 40% / 0.35);
+      box-shadow: 0 0 40px hsl(35 80% 50% / 0.12), inset 0 1px 0 hsl(0 0% 100% / 0.06);
+    }
+
+    .logo-ring img {
+      width: 72px;
+      height: 72px;
+      border-radius: 14px;
+    }
+
+    h1 {
+      margin: 0 0 0.5rem;
+      font-family: Cinzel, Georgia, serif;
+      font-size: clamp(1.75rem, 5vw, 2.5rem);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+    }
+
+    .tagline {
+      margin: 0 auto 1rem;
+      max-width: 36rem;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .version-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: hsl(35 60% 20% / 0.25);
+      border: 1px solid hsl(35 50% 40% / 0.35);
+    }
+
+    .version-pill .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success);
+    }
+
+    .version-pill.loading .dot {
+      background: var(--muted);
+      box-shadow: none;
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    section { margin-bottom: 2.5rem; }
+
+    h2 {
+      margin: 0 0 1rem;
+      font-family: Cinzel, Georgia, serif;
+      font-size: 1.15rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .downloads {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .dl-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding: 1.35rem 1.4rem;
+      border-radius: var(--radius);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .dl-card:hover:not(.disabled) {
+      border-color: hsl(35 50% 40% / 0.45);
+      transform: translateY(-2px);
+    }
+
+    .dl-card.disabled { opacity: 0.55; }
+
+    .dl-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+    }
+
+    .dl-icon {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: hsl(220 14% 18%);
+      color: var(--gold);
+    }
+
+    .dl-icon svg { width: 22px; height: 22px; }
+
+    .dl-title {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .dl-sub {
+      margin: 0.15rem 0 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: none;
+      border-radius: 10px;
+      font: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s, opacity 0.2s;
+    }
+
+    .btn-primary {
+      color: hsl(230 25% 8%);
+      background: linear-gradient(180deg, var(--gold), var(--gold-dim));
+      box-shadow: 0 4px 16px hsl(35 80% 40% / 0.25);
+    }
+
+    .btn-primary:hover {
+      color: hsl(230 25% 8%);
+      text-decoration: none;
+      filter: brightness(1.06);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:disabled,
+    .btn-primary.disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+      filter: none;
+      pointer-events: none;
+    }
+
+    .btn-ghost {
+      color: var(--text);
+      background: hsl(220 14% 18%);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover {
+      background: hsl(220 14% 22%);
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .notice {
+      padding: 1rem 1.15rem;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+    }
+
+    .notice.warn {
+      border-color: hsl(35 50% 40% / 0.4);
+      background: hsl(35 40% 12% / 0.35);
+    }
+
+    .notice.error {
+      border-color: hsl(0 50% 40% / 0.4);
+      background: hsl(0 30% 12% / 0.35);
+    }
+
+    .notice p { margin: 0; }
+    .notice p + p { margin-top: 0.5rem; }
+
+    .features {
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .feature {
+      padding: 1rem 1.1rem;
+      border-radius: 12px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+    }
+
+    .feature strong {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 0.92rem;
+    }
+
+    .feature span {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .meta-grid {
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .meta-item {
+      padding: 0.85rem 1rem;
+      border-radius: 10px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      font-size: 0.88rem;
+    }
+
+    .meta-item dt {
+      margin: 0 0 0.2rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .meta-item dd { margin: 0; }
+
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    footer p { margin: 0.35rem 0; }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem 1.25rem;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo-ring">
+        <img src="assets/icon.png" width="72" height="72" alt="" aria-hidden="true" />
+      </div>
+      <h1>The Adventurer's Atlas</h1>
+      <p class="tagline">
+        A local-first desktop toolkit for game masters running fifth edition at the table —
+        world planning, encounter design, reference databases, generators, and live combat.
+      </p>
+      <div id="version-pill" class="version-pill loading" aria-live="polite">
+        <span class="dot" aria-hidden="true"></span>
+        <span id="version-label">Checking releases…</span>
+      </div>
+    </header>
+
+    <section aria-labelledby="downloads-heading">
+      <h2 id="downloads-heading">Download</h2>
+      <div id="status-banner" class="notice warn" hidden></div>
+      <div class="downloads" id="download-grid">
+        <!-- macOS Apple Silicon -->
+        <article class="dl-card disabled" id="card-mac-arm64">
+          <div class="dl-head">
+            <div class="dl-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-3 6-6.91 0-3.5-2.5-5.5-5-7.5-1.5-1-3-1.5-5-1.5s-3.5.5-5 1.5C4.5 10.53 2 12.53 2 16.03 2 19.94 5 23 8 23c1.25 0 2.5-1.06 4-1.06z"/>
+                <path d="M12 7.5c0-2.5 1.5-4.5 4-4.5 1 0 2 .5 2.5 1.5"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="dl-title">macOS · Apple Silicon</h3>
+              <p class="dl-sub">M1 / M2 / M3 / M4 · .dmg</p>
+            </div>
+          </div>
+          <a id="btn-mac-arm64" class="btn btn-primary disabled" href="#" download aria-disabled="true">Download for Mac (arm64)</a>
+        </article>
+
+        <!-- macOS Intel -->
+        <article class="dl-card disabled" id="card-mac-x64">
+          <div class="dl-head">
+            <div class="dl-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-3 6-6.91 0-3.5-2.5-5.5-5-7.5-1.5-1-3-1.5-5-1.5s-3.5.5-5 1.5C4.5 10.53 2 12.53 2 16.03 2 19.94 5 23 8 23c1.25 0 2.5-1.06 4-1.06z"/>
+                <path d="M12 7.5c0-2.5 1.5-4.5 4-4.5 1 0 2 .5 2.5 1.5"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="dl-title">macOS · Intel</h3>
+              <p class="dl-sub">x64 Macs · .dmg</p>
+            </div>
+          </div>
+          <a id="btn-mac-x64" class="btn btn-primary disabled" href="#" download aria-disabled="true">Download for Mac (Intel)</a>
+        </article>
+
+        <!-- Windows -->
+        <article class="dl-card disabled" id="card-win">
+          <div class="dl-head">
+            <div class="dl-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M3 5.5L10.5 4.5V11.5H3V5.5ZM10.5 12.5V19.5L3 18.4V12.5H10.5ZM11.5 4.3L21 2.8V11.5H11.5V4.3ZM11.5 12.5H21V21.2L11.5 19.6V12.5Z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="dl-title">Windows</h3>
+              <p class="dl-sub">Windows 10 / 11 · installer (.exe)</p>
+            </div>
+          </div>
+          <a id="btn-win" class="btn btn-primary disabled" href="#" download aria-disabled="true">Download for Windows</a>
+        </article>
+      </div>
+      <p style="margin: 1rem 0 0; font-size: 0.85rem; color: var(--muted);">
+        All builds are unsigned during beta — your OS may show a SmartScreen or Gatekeeper warning.
+        On macOS, open System Settings → Privacy &amp; Security to allow the app after download.
+      </p>
+    </section>
+
+    <section aria-labelledby="features-heading">
+      <h2 id="features-heading">What you get</h2>
+      <div class="features">
+        <div class="feature"><strong>Runs locally</strong><span>No account, no cloud sync, no LLM required for core play.</span></div>
+        <div class="feature"><strong>Live combat</strong><span>Initiative, attacks, conditions, death saves, and undo at the table.</span></div>
+        <div class="feature"><strong>Reference library</strong><span>SRD databases for monsters, spells, items, backgrounds, and more.</span></div>
+        <div class="feature"><strong>Prep tools</strong><span>Generators, world planner, session prep, and encounter design.</span></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="requirements-heading">
+      <h2 id="requirements-heading">Requirements</h2>
+      <dl class="meta-grid">
+        <div class="meta-item"><dt>macOS</dt><dd>11 Big Sur or later</dd></div>
+        <div class="meta-item"><dt>Windows</dt><dd>64-bit Windows 10 / 11</dd></div>
+        <div class="meta-item"><dt>Disk</dt><dd>~300 MB installed</dd></div>
+        <div class="meta-item"><dt>Network</dt><dd>Optional — not required for core features</dd></div>
+      </dl>
+    </section>
+
+    <section aria-labelledby="links-heading">
+      <h2 id="links-heading">More</h2>
+      <div class="links">
+        <a id="link-all-releases" href="https://github.com/daemon-ic/the-adventurers-atlas-public-landing/releases">All releases</a>
+        <a href="https://github.com/daemon-ic/the-adventurers-atlas-public-landing/issues">Report a bug</a>
+      </div>
+      <a id="btn-fallback" class="btn btn-ghost" href="https://github.com/daemon-ic/the-adventurers-atlas-public-landing/releases/latest" style="max-width: 320px; margin: 0 auto; display: none;">
+        View on GitHub Releases
+      </a>
+    </section>
+
+    <footer>
+      <p>© 2026 Stickohno &amp; Daemon · Application code is proprietary · See repository <code>LICENSE</code> / <code>EULA.txt</code></p>
+      <p>Game content from SRD 5.1 + SRD 5.2 (CC BY 4.0) · Compatible with fifth edition</p>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var REPO = 'daemon-ic/the-adventurers-atlas-public-landing';
+      var FALLBACK_VERSION = '1.95.0';
+
+      var versionPill = document.getElementById('version-pill');
+      var versionLabel = document.getElementById('version-label');
+      var statusBanner = document.getElementById('status-banner');
+      var btnFallback = document.getElementById('btn-fallback');
+
+      var platforms = {
+        'mac-arm64': { card: 'card-mac-arm64', btn: 'btn-mac-arm64' },
+        'mac-x64': { card: 'card-mac-x64', btn: 'btn-mac-x64' },
+        'mac': { card: null, btn: null },
+        'win': { card: 'card-win', btn: 'btn-win' },
+      };
+
+      function formatBytes(n) {
+        if (!n) return '';
+        var units = ['B', 'KB', 'MB', 'GB'];
+        var i = 0;
+        while (n >= 1024 && i < units.length - 1) { n /= 1024; i++; }
+        return n.toFixed(i ? 1 : 0) + ' ' + units[i];
+      }
+
+      function classifyAsset(name) {
+        var lower = name.toLowerCase();
+        if (lower.endsWith('.dmg')) {
+          if (/arm64|aarch64|apple.?silicon/.test(lower)) return 'mac-arm64';
+          if (/x64|x86_64|intel|amd64/.test(lower)) return 'mac-x64';
+          return 'mac';
+        }
+        if (lower.endsWith('.exe') && !/uninstall/i.test(lower)) return 'win';
+        if (/macos-arm64|darwin-arm64/.test(lower)) return 'mac-arm64';
+        if (/macos-x64|macos-intel|darwin-x64/.test(lower)) return 'mac-x64';
+        if (lower.endsWith('.zip') && /mac|darwin|osx|os x/.test(lower)) {
+          if (/arm64|aarch64/.test(lower)) return 'mac-arm64';
+          if (/x64|x86_64|intel/.test(lower)) return 'mac-x64';
+          return 'mac';
+        }
+        return null;
+      }
+
+      function enableDownload(platform, asset) {
+        var cfg = platforms[platform];
+        if (!cfg || !cfg.btn) return;
+        var card = document.getElementById(cfg.card);
+        var btn = document.getElementById(cfg.btn);
+        card.classList.remove('disabled');
+        btn.classList.remove('disabled');
+        btn.href = asset.browser_download_url;
+        btn.removeAttribute('aria-disabled');
+        var size = formatBytes(asset.size);
+        btn.textContent = btn.textContent.split(' · ')[0] + (size ? ' · ' + size : '');
+      }
+
+      function hideCard(platform) {
+        var cfg = platforms[platform];
+        if (!cfg || !cfg.card) return;
+        document.getElementById(cfg.card).style.display = 'none';
+      }
+
+      function showBanner(kind, html) {
+        statusBanner.hidden = false;
+        statusBanner.className = 'notice ' + kind;
+        statusBanner.innerHTML = html;
+      }
+
+      function setVersion(text, loading) {
+        versionLabel.textContent = text;
+        versionPill.classList.toggle('loading', !!loading);
+      }
+
+      function applyGenericMac(url, size) {
+        var label = 'Download for Mac' + (size ? ' · ' + size : '');
+        ['mac-arm64', 'mac-x64'].forEach(function (p) { hideCard(p); });
+        var armCard = document.getElementById('card-mac-arm64');
+        armCard.style.display = '';
+        armCard.classList.remove('disabled');
+        var btn = document.getElementById('btn-mac-arm64');
+        btn.classList.remove('disabled');
+        btn.href = url;
+        btn.textContent = label;
+        btn.removeAttribute('aria-disabled');
+        hideCard('mac-x64');
+      }
+
+      function parseRelease(release) {
+        var tag = (release.tag_name || '').replace(/^v/, '');
+        setVersion('Version ' + tag, false);
+
+        if (release.html_url) {
+          document.getElementById('link-all-releases').href = release.html_url.replace(/\/tag\/[^/]+$/, '');
+        }
+
+        var buckets = {};
+        (release.assets || []).forEach(function (asset) {
+          var kind = classifyAsset(asset.name);
+          if (!kind) return;
+          if (!buckets[kind] || asset.size > buckets[kind].size) buckets[kind] = asset;
+        });
+
+        var found = 0;
+        ['mac-arm64', 'mac-x64', 'win'].forEach(function (p) {
+          if (buckets[p]) { enableDownload(p, buckets[p]); found++; }
+        });
+
+        if (buckets.mac && !buckets['mac-arm64'] && !buckets['mac-x64']) {
+          applyGenericMac(buckets.mac.browser_download_url, formatBytes(buckets.mac.size));
+          found++;
+        }
+
+        if (!found) {
+          showBanner('warn',
+            '<p><strong>No installable assets on this release yet.</strong> ' +
+            'Publish a GitHub Release with <code>.dmg</code> (macOS) and/or <code>.exe</code> (Windows) artifacts from <code>npm run package:mac</code> / <code>package:win</code>.</p>' +
+            '<p><a href="https://github.com/' + REPO + '/releases">Browse all releases →</a></p>');
+          btnFallback.style.display = 'flex';
+        } else {
+          ['mac-arm64', 'mac-x64', 'win'].forEach(function (p) {
+            var cfg = platforms[p];
+            if (!cfg || !cfg.card) return;
+            var card = document.getElementById(cfg.card);
+            if (card.classList.contains('disabled')) card.style.display = 'none';
+          });
+          if (release.body) {
+            showBanner('', '<p>' + release.body.split('\n').slice(0, 3).join('<br>') + '</p>');
+          }
+        }
+      }
+
+      function handleNoRelease() {
+        setVersion('Beta · v' + FALLBACK_VERSION, false);
+        showBanner('warn',
+          '<p><strong>No published release yet.</strong> Installers will appear here once the next release is published with build artifacts.</p>');
+        btnFallback.style.display = 'flex';
+      }
+
+      fetch('https://api.github.com/repos/' + REPO + '/releases/latest')
+        .then(function (res) {
+          if (res.status === 404) { handleNoRelease(); return null; }
+          if (!res.ok) throw new Error('GitHub API ' + res.status);
+          return res.json();
+        })
+        .then(function (data) {
+          if (data) parseRelease(data);
+        })
+        .catch(function () {
+          setVersion('Beta · v' + FALLBACK_VERSION, false);
+          showBanner('error',
+            '<p>Could not reach GitHub to load the latest release. Use the button below or check <a href="https://github.com/' + REPO + '/releases">GitHub Releases</a> directly.</p>');
+          btnFallback.style.display = 'flex';
+        });
+    })();
+  </script>
+</body>
+</html>
