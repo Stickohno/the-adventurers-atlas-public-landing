@@ -601,20 +601,23 @@
         btnFallback.style.display = 'flex';
       }
 
-      fetch('https://api.github.com/repos/' + REPO + '/releases/latest')
-        .then(function (res) {
-          if (res.status === 404) { handleNoRelease(); return null; }
-          if (!res.ok) throw new Error('GitHub API ' + res.status);
-          return res.json();
-        })
-        .then(function (data) {
-          if (data) parseRelease(data);
-        })
-        .catch(function () {
-          setVersion('Beta · v' + FALLBACK_VERSION, false);
-          showBanner('error',
-            '<p>Could not reach GitHub to load the latest release. Use the button below or check <a href="https://github.com/' + REPO + '/releases">GitHub Releases</a> directly.</p>');
-          btnFallback.style.display = 'flex';
+     fetch('https://api.github.com/repos/' + REPO + '/releases?per_page=10')
+  .then(function (res) {
+    if (!res.ok) throw new Error('GitHub API ' + res.status);
+    return res.json();
+  })
+  .then(function (list) {
+    // /releases is newest-first and INCLUDES pre-releases,
+    // unlike /releases/latest which skips drafts + pre-releases.
+    var release = (list || []).filter(function (r) { return !r.draft; })[0];
+    if (release) { parseRelease(release); } else { handleNoRelease(); }
+  })
+  .catch(function () {
+    setVersion('Beta · v' + FALLBACK_VERSION, false);
+    showBanner('error',
+      '<p>Could not reach GitHub to load the latest release. Use the button below or check <a href="https://github.com/' + REPO + '/releases">GitHub Releases</a> directly.</p>');
+    btnFallback.style.display = 'flex';
+  });
         });
     })();
   </script>
